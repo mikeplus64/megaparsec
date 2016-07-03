@@ -57,9 +57,9 @@ data ErrorItem t
   = Tokens (NonEmpty t)                        -- ^ Non-empty stream of tokens
   | Label (NonEmpty Char)                      -- ^ Label (cannot be empty)
   | EndOfInput                                 -- ^ End of input
-  | LabelledErrorItem
+  | LabelledTokens
     (NonEmpty (NonEmpty Char)) -- use dlist maybe?
-    (ErrorItem t)                              -- ^ Non-empty labelled stream of tokens
+    (NonEmpty t)                               -- ^ Non-empty labelled stream of tokens
   deriving (Show, Read, Eq, Ord, Data, Typeable)
 
 -- | The type class defines how to represent information about various
@@ -203,8 +203,8 @@ instance (Ord t, ShowToken t) => ShowErrorComponent (ErrorItem t) where
   showErrorComponent (Tokens   ts) = showTokens ts
   showErrorComponent (Label label) = NE.toList label
   showErrorComponent EndOfInput    = "end of input"
-  showErrorComponent (LabelledErrorItem labels ts) =
-    showErrorComponent ts ++ " (" ++ intercalate ", " l ++ ")"
+  showErrorComponent (LabelledTokens labels ts) =
+    showErrorComponent (Tokens ts) ++ " (" ++ intercalate ", " l ++ ")"
     where
       l = map NE.toList (NE.toList labels)
 
@@ -268,7 +268,6 @@ orList (x:|[y]) = x ++ " or " ++ y
 orList xs       = intercalate ", " (NE.init xs) ++ ", or " ++ NE.last xs
 
 addErrorLabel :: NonEmpty Char -> ErrorItem t -> ErrorItem t
-addErrorLabel lbl (LabelledErrorItem errs e) =
-  LabelledErrorItem (NE.cons lbl errs) e
-addErrorLabel lbl t =
-  LabelledErrorItem (lbl:|[]) t
+addErrorLabel lbl (LabelledTokens errs e) = LabelledTokens (NE.cons lbl errs) e
+addErrorLabel lbl (Tokens t)              = LabelledTokens (lbl:|[]) t
+addErrorLabel _   e                       = e
