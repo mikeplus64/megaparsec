@@ -1,7 +1,12 @@
-## Megaparsec 5.1.0
+## Megaparsec 5.0.1
+
+* Derived `NFData` instances for `Pos`, `InvalidPosException`, `SourcePos`,
+  `ErrorItem`, `Dec`, `ParseError`, and `State`.
 
 * Derived `Data` instance for `ParseError`, `Data` and `Typeable` instances
-  for `SourcePos`.
+  for `SourcePos` and `State`.
+
+* Minor documentation improvements.
 
 ## Megaparsec 5.0.0
 
@@ -49,6 +54,9 @@
 
 * `unexpected` combinator now accepts argument of type `ErrorItem` instead
   of plain `String`.
+
+* General performance improvements and improvements in speed of some
+  combinators, `manyTill` in particular.
 
 ### Error messages
 
