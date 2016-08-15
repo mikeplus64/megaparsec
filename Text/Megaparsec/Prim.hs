@@ -707,15 +707,11 @@ pLabelTokens lbl p = ParsecT $ \s cok cerr eok eerr ->
       cok' x s' hs = cok x s' (refreshLastHint hs cl)
       eok' x s' hs = eok x s' (refreshLastHint hs el)
       lbl' = NE.nonEmpty lbl
-
-      map1 :: Ord b => b -> (a -> b) -> E.Set a -> E.Set b
-      map1 z f set
-        | E.null set = E.singleton z
-        | otherwise  = E.map f set
-
       annotateAll err = err
         { errorExpected = case lbl' of
-            Just l  -> map1 (Label l) (addErrorLabel l) (errorExpected err)
+            Just l
+              | E.null (errorExpected err) -> E.singleton (Label l)
+              | otherwise                  -> E.map (addErrorLabel l) (errorExpected err)
             Nothing -> E.empty
         }
   in unParser p s cok' (cerr . annotateAll) eok' (eerr . annotateAll)
