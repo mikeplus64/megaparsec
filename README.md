@@ -214,6 +214,9 @@ and Parsec. In most cases Megaparsec is faster, sometimes dramatically
 faster. If you happen to have some other benchmarks, I would appreciate if
 you add Megaparsec to them and let me know how it performs.
 
+If you think your Megaparsec parser is not efficient enough, take a look
+at [these instructions](https://mrkkrp.github.io/megaparsec/tutorials/writing-a-fast-parser.html).
+
 ## Comparison with other solutions
 
 There are quite a few libraries that can be used for parsing in Haskell,
@@ -274,6 +277,8 @@ differences between the two libraries:
 * Megaparsec is faster.
 
 If you want to see a detailed change log, `CHANGELOG.md` may be helpful.
+Also see [this original announcement](https://notehub.org/w7037) for another
+comparison.
 
 To be honest Parsec's development has seemingly stagnated. It has no test
 suite (only three per-bug tests), and all its releases beginning from
@@ -313,6 +318,11 @@ The following packages are designed to be used with Megaparsec:
 * [`hspec-megaparsec`](https://hackage.haskell.org/package/hspec-megaparsec)
   — utilities for testing Megaparsec parsers with with
   [Hspec](https://hackage.haskell.org/package/hspec).
+
+* [`cassava-megaparsec`](https://hackage.haskell.org/package/cassava-megaparsec) —
+  Megaparsec parser of CSV files that plays nicely
+  with [Cassava](https://hackage.haskell.org/package/cassava).
+
 * [`tagsoup-megaparsec`](https://hackage.haskell.org/package/tagsoup-megaparsec)
   — a library for easily using [TagSoup](https://hackage.haskell.org/package/tagsoup)
   as a token type in Megaparsec.

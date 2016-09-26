@@ -1,3 +1,30 @@
+## Megaparsec 5.1.0
+
+* Defined `displayException` for `ParseError`, so exceptions are displayed
+  in human-friendly form now. This works with GHC 7.10 and later.
+
+* Line comments parsed by `skipLineComment` now may end at the end of input
+  and do not necessarily require a newline to be parsed correctly. See #119.
+
+* Exposed `parseErrorTextPretty` function in `Text.Megaparsec.Error` to
+  allow to render `ParseError`s without stack of source positions.
+
+* Eliminated the `old-tests` test suite — Parsec legacy. The cases that are
+  not already *obviously* covered in the main test suite were included into
+  it.
+
+* Added `Arbitrary` instances for the following data types: `Pos`,
+  `SourcePos`, `ErrorItem`, `Dec`, `ParseError` and `State`. This should
+  make testing easier without the need to add orphan instances every time.
+  The drawback is that we start to depend on `QuickCheck`, but that's a fair
+  price.
+
+* The test suite now uses the combination of Hspec and the
+  `hpesc-megaparsec` package, which also improved the latter (that package
+  is the recommended way to test Megaparsec parsers).
+
+* Further documentation improvements.
+
 ## Megaparsec 5.0.1
 
 * Derived `NFData` instances for `Pos`, `InvalidPosException`, `SourcePos`,

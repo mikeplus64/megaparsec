@@ -54,6 +54,12 @@ data Operator m a
 -- This is not done by default because in some cases you don't want to allow
 -- repeating prefix or postfix operators.
 --
+-- If you want to have an operator that is a prefix of another operator in
+-- the table, use the following (or similar) wrapper instead of plain
+-- 'symbol':
+--
+-- > op n = (lexeme . try) (string n <* notFollowedBy punctuationChar)
+--
 -- @makeExprParser@ takes care of all the complexity involved in building an
 -- expression parser. Here is an example of an expression parser that
 -- handles prefix signs, postfix increment and basic arithmetic:
@@ -80,8 +86,8 @@ makeExprParser :: MonadParsec e s m
   -> m a               -- ^ Resulting expression parser
 makeExprParser = foldl addPrecLevel
 
--- | @addPrecLevel p ops@ adds ability to parse operators in table @ops@ to
--- parser @p@.
+-- | @addPrecLevel p ops@ adds the ability to parse operators in table @ops@
+-- to parser @p@.
 
 addPrecLevel :: MonadParsec e s m => m a -> [Operator m a] -> m a
 addPrecLevel term ops =
@@ -92,7 +98,7 @@ addPrecLevel term ops =
         las'  = pInfixL (choice las) term'
         nas'  = pInfixN (choice nas) term'
 
--- | @pTerm prefix term postfix@ parses term with @term@ surrounded by
+-- | @pTerm prefix term postfix@ parses a term with @term@ surrounded by
 -- optional prefix and postfix unary operators. Parsers @prefix@ and
 -- @postfix@ are allowed to fail, in this case 'id' is used.
 
