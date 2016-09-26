@@ -286,10 +286,8 @@ instance (Ord t, ShowToken t) => ShowErrorComponent (ErrorItem t) where
   showErrorComponent (Tokens   ts) = showTokens ts
   showErrorComponent (Label label) = NE.toList label
   showErrorComponent EndOfInput    = "end of input"
-  showErrorComponent (LabelledTokens labels ts) =
-    showErrorComponent (Tokens ts) ++ " (" ++ intercalate ", " l ++ ")"
-    where
-      l = map NE.toList (NE.toList labels)
+  showErrorComponent (LabelledTokens lbls ts) =
+    showErrorComponent (Tokens ts) ++ " (" ++  NE.toList (NE.last lbls) ++ ")"
 
 instance ShowErrorComponent Dec where
   showErrorComponent (DecFail msg) = msg
